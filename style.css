@@ -109,7 +109,7 @@ footer {
     }
 
     .container {
-        padding: 15px;
-        margin: 15px auto;
+        width: 95%;
+        margin: 20px auto;
     }
 }
