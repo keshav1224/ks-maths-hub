@@ -1,3 +1,9 @@
+*{
+    box-sizing: border-box;
+}
+
+
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
@@ -104,12 +110,14 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-    h1 {
+   h1 {
         font-size: 2em;
     }
 
     .container {
-        width: 95%;
-        margin: 20px auto;
+        width: 95vw;
+        max-width: none;
+        margin: 10px auto;
+        padding: 15px;
     }
 }
