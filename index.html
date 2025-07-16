@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KS Maths Hub</title>
+    <link rel="icon" href="favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px 10px 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00c6ff;
+            text-shadow: 2px 2px #000;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            border: 2px solid #00c6ff;
+        }
+
+        .card h2 {
+            margin: 10px 0 5px 0;
+            font-size: 1.5em;
+            color: #00c6ff;
+        }
+
+        .card p {
+            font-size: 0.95em;
+            color: #ccc;
+        }
+
+        footer {
+            padding: 20px;
+            font-size: 0.8em;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">KS</div>
+    <h1>Maths Hub</h1>
+    <p>All-in-One Visual Maths Calculators</p>
+</header>
+
+<div class="grid">
+
+    <div class="card" onclick="location.href='normal-calculator.html'">
+        <h2>Normal Calculator</h2>
+        <p>Standard + − × ÷ operations</p>
+    </div>
+
+    <div class="card" onclick="location.href='factorial.html'">
+        <h2>Factorial Calculator</h2>
+        <p>n! with steps & graph</p>
+    </div>
+
+    <div class="card" onclick="location.href='permutation-combination.html'">
+        <h2>Permutations & Combinations</h2>
+        <p>P(n,r) & C(n,r) with 3 graphs</p>
+    </div>
+
+    <div class="card" onclick="location.href='square-cube.html'">
+        <h2>Square & Cube</h2>
+        <p>Square & Cube with graph & steps</p>
+    </div>
+
+    <div class="card" onclick="location.href='trigonometry.html'">
+        <h2>Trigonometry</h2>
+        <p>Sin, Cos, Tan values & graphs</p>
+    </div>
+
+    <div class="card" onclick="location.href='area-perimeter.html'">
+        <h2>Area & Perimeter</h2>
+        <p>Calculate area & perimeter of shapes</p>
+    </div>
+
+    <div class="card" onclick="location.href='percentage.html'">
+        <h2>Percentage Calculator</h2>
+        <p>% of a number, increase/decrease</p>
+    </div>
+
+    <div class="card" onclick="location.href='power.html'">
+        <h2>Power Calculator</h2>
+        <p>Calculate \( a^b \) with steps</p>
+    </div>
+
+    <div class="card" onclick="location.href='square-root.html'">
+        <h2>Square Root</h2>
+        <p>Find √x with steps</p>
+    </div>
+
+    <div class="card" onclick="location.href='quadratic.html'">
+        <h2>Quadratic Equations</h2>
+        <p>Solve ax² + bx + c = 0 with steps & graph</p>
+    </div>
+
+    <div class="card" onclick="location.href='more-calculators.html'">
+        <h2>More Calculators</h2>
+        <p>LCM, HCF, Log etc. (Coming soon)</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 KS Maths Hub | Visual Learning for Students
+</footer>
+
+</body>
+</html>

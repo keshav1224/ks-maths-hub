@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trigonometry Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header><h1>Trigonometry </h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Trigonometry</h2>
+    <p>Trigonometry deals with angles and the relationships between their sides using <b>sin</b>, <b>cos</b>, and <b>tan</b> functions.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formulas</h2>
+    <p>\( \sin(\theta) = \frac{\text{Opposite}}{\text{Hypotenuse}} \)</p>
+    <p>\( \cos(\theta) = \frac{\text{Adjacent}}{\text{Hypotenuse}} \)</p>
+    <p>\( \tan(\theta) = \frac{\text{Opposite}}{\text{Adjacent}} \)</p>
+
+
+     <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="angle" placeholder="Enter Angle (in degrees)">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    
+    <!-- Graph Section -->
+    <h2>📊 Graph of Trigonometric Functions</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+   
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Draw Graph (0 to 360 degrees)
+let degrees = [];
+let sinY = [];
+let cosY = [];
+let tanY = [];
+
+for (let i = 0; i <= 360; i++) {
+    degrees.push(i);
+    sinY.push(Math.sin(i * Math.PI / 180));
+    cosY.push(Math.cos(i * Math.PI / 180));
+    let tanValue = Math.tan(i * Math.PI / 180);
+    // Handle tan asymptotes
+    if (Math.abs(tanValue) > 10) {
+        tanY.push(null);
+    } else {
+        tanY.push(tanValue);
+    }
+}
+
+let sinTrace = {x: degrees, y: sinY, mode: 'lines', name: 'sin(θ)', line: {color: '#ff4c4c'}};
+let cosTrace = {x: degrees, y: cosY, mode: 'lines', name: 'cos(θ)', line: {color: '#00ccff'}};
+let tanTrace = {x: degrees, y: tanY, mode: 'lines', name: 'tan(θ)', line: {color: '#ffcc00'}};
+
+let layout = {
+    title: 'Trigonometric Functions (0° to 360°)',
+    paper_bgcolor: '#1e1e1e',
+    plot_bgcolor: '#1e1e1e',
+    font: {color: '#fff'},
+    yaxis: {range: [-2, 2]},
+};
+
+Plotly.newPlot('graph', [sinTrace, cosTrace, tanTrace], layout);
+
+// Calculator Function with Steps
+function calc() {
+    let angle = parseFloat(document.getElementById('angle').value);
+
+    if (isNaN(angle)) {
+        document.getElementById('result').innerText = "Please enter an angle.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let rad = angle * Math.PI / 180;
+    let sinVal = Math.sin(rad).toFixed(4);
+    let cosVal = Math.cos(rad).toFixed(4);
+    let tanVal = (Math.abs(Math.cos(rad)) < 0.0001) ? "Undefined" : (Math.tan(rad).toFixed(4));
+
+    document.getElementById('result').innerText = `sin(${angle}°) = ${sinVal}, cos(${angle}°) = ${cosVal}, tan(${angle}°) = ${tanVal}`;
+
+    let stepsHTML = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>Convert angle to radians: \( ${angle}° = ${rad.toFixed(4)} \ \text{radians} \)</p>
+        <p>sin(${angle}°) = ${sinVal}</p>
+        <p>cos(${angle}°) = ${cosVal}</p>
+        <p>tan(${angle}°) = ${tanVal}</p>
+    `;
+
+    document.getElementById('steps').innerHTML = stepsHTML;
+    MathJax.typeset();
+}
+</script>
+
+</body>
+</html>

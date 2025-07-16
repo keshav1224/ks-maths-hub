@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Area & Perimeter Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header><h1>Area & Perimeter </h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Area & Perimeter</h2>
+    <p><b>Area</b> is the space covered by a shape.<br>
+       <b>Perimeter</b> is the total length around the shape.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formulas</h2>
+    <p>For Rectangle or Square:</p>
+    <p>Area: \( A = \text{length} \times \text{width} \)</p>
+    <p>Perimeter: \( P = 2 \times (\text{length} + \text{width}) \)</p>
+
+
+    <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="length" placeholder="Enter Length">
+    <input type="number" id="width" placeholder="Enter Width">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+
+    
+    <!-- Graph Section -->
+    <h2>📊 Rectangle/Square Visualization</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+    
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Default Graph of square (5x5)
+drawGraph(5,5);
+
+// Calculator Function with Steps
+function calc() {
+    let length = parseFloat(document.getElementById('length').value);
+    let width = parseFloat(document.getElementById('width').value);
+
+    if (isNaN(length) || isNaN(width)) {
+        document.getElementById('result').innerText = "Please enter both length and width.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let area = length * width;
+    let perimeter = 2 * (length + width);
+
+    document.getElementById('result').innerText = `Area: ${area}, Perimeter: ${perimeter}`;
+
+    let stepsHTML = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>Area = ${length} × ${width} = ${area}</p>
+        <p>Perimeter = 2 × (${length} + ${width}) = 2 × ${length + width} = ${perimeter}</p>
+    `;
+
+    document.getElementById('steps').innerHTML = stepsHTML;
+    MathJax.typeset();
+
+    drawGraph(length, width);
+}
+
+// Draw Rectangle using Plotly
+function drawGraph(length, width) {
+    let trace = {
+        type: 'scatter',
+        mode: 'lines',
+        x: [0, length, length, 0, 0],
+        y: [0, 0, width, width, 0],
+        fill: 'toself',
+        fillcolor: '#00ccff88',
+        line: { color: '#00ccff' },
+        name: 'Rectangle/Square'
+    };
+
+    let layout = {
+        title: `Rectangle/Square (L=${length}, W=${width})`,
+        xaxis: {range: [-1, length + 1]},
+        yaxis: {range: [-1, width + 1]},
+        paper_bgcolor: '#1e1e1e',
+        plot_bgcolor: '#1e1e1e',
+        font: {color: '#fff'},
+        showlegend: false
+    };
+
+    Plotly.newPlot('graph', [trace], layout);
+}
+</script>
+
+</body>
+</html>

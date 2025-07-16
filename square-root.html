@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Square Root Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!-- For Graphs -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> <!-- For MathJax -->
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- For Formulas -->
+</head>
+<body>
+
+<header><h1>Square Root </h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Square Root</h2>
+    <p>The <b>square root</b> of a number is a value that, when multiplied by itself, gives the original number.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formula</h2>
+    <p>\( \sqrt{x} = \text{a number such that} \ a \times a = x \)</p>
+
+
+     <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="num" placeholder="Enter a number (≥ 0)">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    <!-- Graph Section -->
+    <h2>📊 Graph of \( y = \sqrt{x} \)</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+   
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Calculator Function with Steps
+function calc() {
+    let n = document.getElementById('num').value;
+
+    if (n === "") {
+        document.getElementById('result').innerText = "Please enter a number.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    if (n < 0) {
+        document.getElementById('result').innerText = "Square root of negative numbers is not real.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let root = Math.sqrt(n).toFixed(4);
+
+    document.getElementById('result').innerText = `Square Root of ${n} is ${root}`;
+
+    let stepsHTML = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>The square root of ${n} is the number that when multiplied by itself equals ${n}.</p>
+        <p>\( \\sqrt{${n}} = ${root} \)</p>
+    `;
+
+    document.getElementById('steps').innerHTML = stepsHTML;
+    MathJax.typeset(); // Render Math
+}
+
+// Graph of sqrt(x)
+let x = [];
+let y = [];
+
+for (let i = 0; i <= 25; i++) {
+    x.push(i);
+    y.push(Math.sqrt(i));
+}
+
+let trace = {
+    x: x,
+    y: y,
+    mode: 'lines',
+    name: '√x',
+    line: { color: '#00ff99' }
+};
+
+let layout = {
+    title: 'Graph of √x',
+    paper_bgcolor: '#1e1e1e',
+    plot_bgcolor: '#1e1e1e',
+    font: { color: '#fff' }
+};
+
+Plotly.newPlot('graph', [trace], layout);
+</script>
+
+</body>
+</html>

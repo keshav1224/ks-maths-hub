@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Permutations & Combinations Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header><h1>Permutations & Combinations </h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Permutations & Combinations</h2>
+    <p><b>Permutations</b>: Order matters.<br>
+       <b>Combinations</b>: Order doesn't matter.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formulas</h2>
+    <p>Permutation: \( P(n, r) = \frac{n!}{(n - r)!} \)</p>
+    <p>Combination: \( C(n, r) = \frac{n!}{r!(n - r)!} \)</p>
+
+    <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="n" placeholder="Enter n">
+    <input type="number" id="r" placeholder="Enter r">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    <!-- Graph Sections -->
+    <h2>📊 Graph 1: P(n, r) vs C(n, r)</h2>
+    <div id="barGraph" style="width:100%; height:300px;"></div>
+
+    <h2>📈 Graph 2: Factorial Growth (n!)</h2>
+    <div id="factorialGraph" style="width:100%; height:300px;"></div>
+
+    <h2>🌐 Graph 3: 3D Surface of P & C</h2>
+    <div id="surfaceGraph" style="width:100%; height:400px;"></div>
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Factorial Function
+function factorial(num) {
+    if (num === 0 || num === 1) return 1;
+    return num * factorial(num - 1);
+}
+
+// Default Graphs with n=5, r=3
+drawGraphs(5,3);
+
+// Draw all 3 Graphs
+function drawGraphs(n, r) {
+    let perm = factorial(n) / factorial(n - r);
+    let comb = factorial(n) / (factorial(r) * factorial(n - r));
+
+    // Graph 1: Bar Graph
+    let barData = [{
+        x: ['Permutation (P)', 'Combination (C)'],
+        y: [perm, comb],
+        type: 'bar',
+        marker: {color: ['#00ccff', '#ff4c4c']}
+    }];
+    let barLayout = {
+        paper_bgcolor: '#1e1e1e',
+        plot_bgcolor: '#1e1e1e',
+        font: {color: '#fff'},
+        title: `P(${n}, ${r}) vs C(${n}, ${r})`
+    };
+    Plotly.newPlot('barGraph', barData, barLayout);
+
+    // Graph 2: Factorial Growth
+    let factX = [];
+    let factY = [];
+    for (let i = 0; i <= n; i++) {
+        factX.push(i);
+        factY.push(factorial(i));
+    }
+    let factData = [{
+        x: factX,
+        y: factY,
+        mode: 'lines+markers',
+        name: 'n!',
+        line: {color: '#ffaa00'}
+    }];
+    let factLayout = {
+        paper_bgcolor: '#1e1e1e',
+        plot_bgcolor: '#1e1e1e',
+        font: {color: '#fff'},
+        title: 'Factorial Growth (n!)'
+    };
+    Plotly.newPlot('factorialGraph', factData, factLayout);
+
+    // Graph 3: 3D Surface
+    let x = [];
+    let y = [];
+    let pVals = [];
+    let cVals = [];
+
+    for (let i = 1; i <= n; i++) {
+        let rowP = [];
+        let rowC = [];
+        for (let j = 0; j <= i; j++) {
+            rowP.push(factorial(i) / factorial(i - j));
+            rowC.push(factorial(i) / (factorial(j) * factorial(i - j)));
+        }
+        x.push(i);
+        y.push([...Array(i+1).keys()]);
+        pVals.push(rowP);
+        cVals.push(rowC);
+    }
+
+    let surfaceData = [
+        {
+            z: pVals,
+            x: x,
+            y: y,
+            type: 'surface',
+            name: 'Permutation',
+            colorscale: 'Blues',
+            showscale: false
+        },
+        {
+            z: cVals,
+            x: x,
+            y: y,
+            type: 'surface',
+            name: 'Combination',
+            opacity: 0.7,
+            colorscale: 'Reds',
+            showscale: false
+        }
+    ];
+
+    let surfaceLayout = {
+        title: '3D Surface of P(n, r) & C(n, r)',
+        paper_bgcolor: '#1e1e1e',
+        scene: {
+            xaxis: {title: 'n'},
+            yaxis: {title: 'r'},
+            zaxis: {title: 'Value'}
+        },
+        font: {color: '#fff'}
+    };
+
+    Plotly.newPlot('surfaceGraph', surfaceData, surfaceLayout);
+}
+
+// Calculator Function
+function calc() {
+    let n = parseInt(document.getElementById('n').value);
+    let r = parseInt(document.getElementById('r').value);
+
+    if (isNaN(n) || isNaN(r) || n < 0 || r < 0 || r > n) {
+        document.getElementById('result').innerText = "Please enter valid values where n ≥ r ≥ 0.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let perm = factorial(n) / factorial(n - r);
+    let comb = factorial(n) / (factorial(r) * factorial(n - r));
+
+    document.getElementById('result').innerText = `Permutation (P): ${perm}, Combination (C): ${comb}`;
+
+    let stepsHTML = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>Permutation:</p>
+        <p> \( P(${n}, ${r}) = \\frac{${n}!}{(${n} - ${r})!} = \\frac{${factorial(n)}}{${factorial(n-r)}} = ${perm} \)</p>
+        <p>Combination:</p>
+        <p> \( C(${n}, ${r}) = \\frac{${n}!}{${r}!(${n} - ${r})!} = \\frac{${factorial(n)}}{${factorial(r)} × ${factorial(n-r)}} = ${comb} \)</p>
+    `;
+
+    document.getElementById('steps').innerHTML = stepsHTML;
+    MathJax.typeset();
+
+    // Update graphs with user input
+    drawGraphs(n, r);
+}
+</script>
+
+</body>
+</html>

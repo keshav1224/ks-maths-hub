@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quadratic Equation Solver</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header><h1>Quadratic Equation Solver</h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Quadratic Equations</h2>
+    <p>A <b>quadratic equation</b> is of the form \( ax^2 + bx + c = 0 \).</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formula</h2>
+    <p>Roots: \( x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \)</p>
+
+    <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="a" placeholder="Enter a">
+    <input type="number" id="b" placeholder="Enter b">
+    <input type="number" id="c" placeholder="Enter c">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    <!-- Graph Section -->
+    <h2>📊 Graph of Quadratic Function</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+    
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Calculator Function with Steps
+function calc() {
+    let a = parseFloat(document.getElementById('a').value);
+    let b = parseFloat(document.getElementById('b').value);
+    let c = parseFloat(document.getElementById('c').value);
+
+    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        document.getElementById('result').innerText = "Please enter all coefficients.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    if (a === 0) {
+        document.getElementById('result').innerText = "This is not a quadratic equation (a ≠ 0).";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let discriminant = b*b - 4*a*c;
+    let stepsHTML = `<h2>📝 How the Answer is Calculated:</h2>`;
+    stepsHTML += `<p>Discriminant: \( b^2 - 4ac = ${b}^2 - 4×${a}×${c} = ${discriminant} \)</p>`;
+
+    let output = "";
+
+    if (discriminant > 0) {
+        let root1 = ((-b + Math.sqrt(discriminant)) / (2*a)).toFixed(4);
+        let root2 = ((-b - Math.sqrt(discriminant)) / (2*a)).toFixed(4);
+        output = `Roots are Real & Distinct: x₁ = ${root1}, x₂ = ${root2}`;
+        stepsHTML += `<p>Roots: \( x = \\frac{-${b} \\pm \\sqrt{${discriminant}}}{2×${a}} \)</p>`;
+        stepsHTML += `<p>x₁ = ${root1}, x₂ = ${root2}</p>`;
+    }
+    else if (discriminant === 0) {
+        let root = (-b / (2*a)).toFixed(4);
+        output = `Roots are Real & Equal: x = ${root}`;
+        stepsHTML += `<p>Roots: Both roots are the same.</p>`;
+        stepsHTML += `<p>x = \\frac{-${b}}{2×${a}} = ${root}</p>`;
+    }
+    else {
+        output = "Roots are Imaginary (Complex)";
+        stepsHTML += `<p>Since Discriminant < 0, roots are complex numbers.</p>`;
+    }
+
+    document.getElementById('result').innerText = output;
+    document.getElementById('steps').innerHTML = stepsHTML;
+    MathJax.typeset();
+
+    // Update Graph
+    drawGraph(a, b, c);
+}
+
+// Graph Function
+function drawGraph(a, b, c) {
+    let x = [];
+    let y = [];
+
+    for (let i = -10; i <= 10; i += 0.5) {
+        x.push(i);
+        y.push(a*i*i + b*i + c);
+    }
+
+    let trace = {
+        x: x,
+        y: y,
+        mode: 'lines',
+        name: 'y = ax² + bx + c',
+        line: { color: '#ff33cc' }
+    };
+
+    let layout = {
+        title: 'Graph of Quadratic Function',
+        paper_bgcolor: '#1e1e1e',
+        plot_bgcolor: '#1e1e1e',
+        font: { color: '#fff' }
+    };
+
+    Plotly.newPlot('graph', [trace], layout);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Power Calculator (xⁿ)</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header><h1>Power  (xⁿ)</h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Powers</h2>
+    <p>Raising a number to a power means multiplying it by itself n times.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formula</h2>
+    <p>\( x^n = \underbrace{x \times x \times \cdots \times x}_{n \ \text{times}} \)</p>
+
+
+    
+    <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="base" placeholder="Enter base (x)">
+    <input type="number" id="exponent" placeholder="Enter exponent (n)">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    
+    <!-- Graph Section -->
+    <h2>📊 Graph of \( y = x^n \)</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Calculator Function with Steps
+function calc() {
+    let base = document.getElementById('base').value;
+    let exponent = document.getElementById('exponent').value;
+
+    if (base === "" || exponent === "") {
+        document.getElementById('result').innerText = "Please enter both base and exponent.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let result = Math.pow(base, exponent);
+
+    document.getElementById('result').innerText = `${base} raised to the power ${exponent} is ${result}`;
+
+    let stepText = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>${base}<sup>${exponent}</sup> = `;
+
+    for (let i = 1; i <= exponent; i++) {
+        stepText += (i < exponent) ? `${base} × ` : `${base}`;
+    }
+
+    stepText += ` = ${result}</p>`;
+
+    document.getElementById('steps').innerHTML = stepText;
+}
+
+// Graph of x^n
+let x = [];
+let y = [];
+let n = 3; // default power 3
+
+for (let i = -10; i <= 10; i += 0.5) {
+    x.push(i);
+    y.push(Math.pow(i, n));
+}
+
+let trace = {
+    x: x,
+    y: y,
+    mode: 'lines',
+    name: 'xⁿ (n=3)',
+    line: { color: '#ff8800' }
+};
+
+let layout = {
+    title: 'Graph of xⁿ (n=3)',
+    paper_bgcolor: '#1e1e1e',
+    plot_bgcolor: '#1e1e1e',
+    font: { color: '#fff' }
+};
+
+Plotly.newPlot('graph', [trace], layout);
+</script>
+
+</body>
+</html>

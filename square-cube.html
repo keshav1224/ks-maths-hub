@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Square & Cube Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!-- For Graphs -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> <!-- For MathJax -->
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- For Formulas -->
+</head>
+<body>
+
+<header><h1>Square & Cube </h1></header>
+
+<div class="container">
+    <!-- Info Section -->
+    <h2>📖 About Squares and Cubes</h2>
+    <p>A <b>square</b> of a number is the number multiplied by itself.  
+    A <b>cube</b> is the number multiplied by itself three times.</p>
+
+    <!-- Formula Section -->
+    <h2>🧮 Formulas</h2>
+    <p>Square: \( x^2 = x \times x \)</p>
+    <p>Cube: \( x^3 = x \times x \times x \)</p>
+
+    <!-- Calculator Section -->
+    <h2>🔢 Calculator</h2>
+    <input type="number" id="num" placeholder="Enter a number">
+    <button onclick="calc()">Calculate</button>
+    <p id="result"></p>
+    <div id="steps"></div>
+
+    <!-- Graph Section -->
+    <h2>📊 Graph (Square & Cube Functions)</h2>
+    <div id="graph" style="width:100%; height:400px;"></div>
+
+    
+
+    <nav><a href="index.html">Back to Home</a></nav>
+</div>
+
+<script>
+// Calculator Function with Steps
+function calc() {
+    let n = document.getElementById('num').value;
+
+    if (n === "") {
+        document.getElementById('result').innerText = "Please enter a number.";
+        document.getElementById('steps').innerHTML = "";
+        return;
+    }
+
+    let square = n * n;
+    let cube = n * n * n;
+
+    document.getElementById('result').innerText = `Square: ${square}, Cube: ${cube}`;
+
+    let stepsHTML = `
+        <h2>📝 How the Answer is Calculated:</h2>
+        <p>Square: ${n} × ${n} = ${square}</p>
+        <p>Cube: ${n} × ${n} × ${n} = ${cube}</p>
+    `;
+
+    document.getElementById('steps').innerHTML = stepsHTML;
+}
+
+// Graph
+let x = [];
+let ySquare = [];
+let yCube = [];
+
+for (let i = -10; i <= 10; i++) {
+    x.push(i);
+    ySquare.push(i*i);
+    yCube.push(i*i*i);
+}
+
+let squareTrace = {
+    x: x,
+    y: ySquare,
+    mode: 'lines',
+    name: 'Square (x²)',
+    line: { color: '#00c6ff' }
+};
+
+let cubeTrace = {
+    x: x,
+    y: yCube,
+    mode: 'lines',
+    name: 'Cube (x³)',
+    line: { color: '#ff4c4c' }
+};
+
+let layout = {
+    title: 'Square & Cube Graphs',
+    paper_bgcolor: '#1e1e1e',
+    plot_bgcolor: '#1e1e1e',
+    font: { color: '#fff' }
+};
+
+Plotly.newPlot('graph', [squareTrace, cubeTrace], layout);
+</script>
+
+</body>
+</html>
