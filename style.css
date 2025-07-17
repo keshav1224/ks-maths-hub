@@ -98,26 +98,3 @@ nav a {
 nav a:hover {
     text-shadow: 0 0 5px #00c6ff;
 }
-
-/* Footer (optional if you use one) */
-footer {
-    text-align: center;
-    padding: 15px;
-    background: #111;
-    color: #888;
-    margin-top: auto;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-   h1 {
-        font-size: 2em;
-    }
-
-    .container {
-        width: 95vw;
-        max-width: none;
-        margin: 10px auto;
-        padding: 15px;
-    }
-}
